@@ -17,19 +17,9 @@ public class JpaMain {
 
         try {
             Member findMember1 = em.find(Member.class, 101L);
-            System.out.println("findMember1.id = " + findMember1.getId());
-            System.out.println("findMember1.name = " + findMember1.getName());
+            findMember1.setName("ZZZ");
 
-            System.out.println("=== BEFORE ===");
-
-            Member findMember2 = em.find(Member.class, 101L);
-            System.out.println("findMember2.id = " + findMember2.getId());
-            System.out.println("findMember2.name = " + findMember2.getName());
-
-            System.out.println("=== AFTER ===");
-
-            System.out.println("findMember1==findMember2?");
-            System.out.println(findMember1==findMember2);
+//            em.persist(findMember1);
 
             tx.commit();
         } catch (RuntimeException e) {
