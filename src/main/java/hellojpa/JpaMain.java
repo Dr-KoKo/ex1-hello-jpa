@@ -19,7 +19,9 @@ public class JpaMain {
             Member findMember = em.find(Member.class, 200L);
             findMember.setName("AAA");
 
-            em.detach(findMember);
+            em.clear();
+
+            Member findMember2 = em.find(Member.class, 200L);
 
             System.out.println("===========");
 
