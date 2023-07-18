@@ -16,23 +16,20 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 비영속
-            Member member = new Member();
-            member.setId(101L);
-            member.setName("HelloJPA");
+            Member findMember1 = em.find(Member.class, 101L);
+            System.out.println("findMember1.id = " + findMember1.getId());
+            System.out.println("findMember1.name = " + findMember1.getName());
 
             System.out.println("=== BEFORE ===");
 
-            // 영속
-            em.persist(member);
-
-
-            Member findMember = em.find(Member.class, 101L);
-
-            System.out.println("findMember.id = " + findMember.getId());
-            System.out.println("findMember.name = " + findMember.getName());
+            Member findMember2 = em.find(Member.class, 101L);
+            System.out.println("findMember2.id = " + findMember2.getId());
+            System.out.println("findMember2.name = " + findMember2.getName());
 
             System.out.println("=== AFTER ===");
+
+            System.out.println("findMember1==findMember2?");
+            System.out.println(findMember1==findMember2);
 
             tx.commit();
         } catch (RuntimeException e) {
