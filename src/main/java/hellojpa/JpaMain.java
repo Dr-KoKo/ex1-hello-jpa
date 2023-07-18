@@ -16,61 +16,21 @@ public class JpaMain {
         tx.begin();
 
         try {
-            /**
-             * Insert
-             */
-/*
+            // 비영속
             Member member = new Member();
-            member.setId(2L);
-            member.setName("HelloB");
+            member.setId(100L);
+            member.setName("HelloJPA");
 
+            System.out.println("=== BEFORE ===");
+
+            // 영속
             em.persist(member);
- */
+            // 준영속
+            em.detach(member);
+            // 삭제
+            em.remove(member);
 
-            /**
-             * Select
-             */
-/*
-            Member findMember = em.find(Member.class, 1L);
-            System.out.println("findMember.id = " + findMember.getId());
-            System.out.println("findMember.name = " + findMember.getName());
-*/
-
-            /**
-             * Delete
-             */
-/*
-            Member findMember = em.find(Member.class, 1L);
-            em.remove(findMember);
- */
-
-            /**
-             * Update
-             */
-/*
-            Member findMember = em.find(Member.class, 1L);
-            findMember.setName("HelloJPA");
- */
-
-            /**
-             * Selct All
-             */
-/*
-            List<Member> result = em.createQuery("select m from Member m", Member.class).getResultList();
-            for (Member member : result) {
-                System.out.println("member.name = " + member.getName());
-            }
- */
-
-
-            List<Member> result = em.createQuery("select m from Member m", Member.class)
-                    .setFirstResult(5)
-                            .setMaxResults(8)
-                                    .getResultList();
-
-            for (Member member : result) {
-                System.out.println("member.name = " + member.getName());
-            }
+            System.out.println("=== AFTER ===");
 
             tx.commit();
         } catch (RuntimeException e) {
