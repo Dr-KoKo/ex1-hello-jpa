@@ -2,36 +2,25 @@ package hellojpa;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-
 @Entity
-@Table(name = "MBR",
-        uniqueConstraints = @UniqueConstraint(name = "UNIQUE_NAME", columnNames = {"name"}))
+//@SequenceGenerator(
+//        name = "MEMBER_SEQ_GENERATOR",
+//        sequenceName = "MEMBER_SEQ",
+//        initialValue = 1, allocationSize = 50
+//)
+@TableGenerator(
+        name = "MEMBER_SEQ_GENERATOR",
+        table = "MY_SEQUENCES",
+        pkColumnName = "MEMBER_SEQ",
+        initialValue = 0, allocationSize = 50
+)
 public class Member {
     @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "MEMBER_SEQ_GENERATOR")
     private Long id;
-    //@Column(name = "name", unique = true, nullable = false, length = 10, insertable = true, updatable = true)
-    @Column(name = "name", nullable = false, length = 10, insertable = true, updatable = true)
-    //@Column(columnDefinition = "varchar(100) default `EMPTY`")
     private String username;
-    private Integer age;
-    @Column(precision = 19)
-    private BigDecimal age2;
-    @Enumerated(EnumType.STRING)
-    private RoleType roleType;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
-    private LocalDate createdDate2;
-    private LocalDateTime lastModifiedDate2;
-    @Lob
-    private String description;
-    @Transient
-    private int temp;
 
     protected Member() {
     }
