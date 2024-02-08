@@ -44,4 +44,9 @@ public class Member {
     public void setTeam(Team team) {
         this.team = team;
     }
+
+//    public void join(Team team) {
+//        this.setTeam(team);
+//        team.getMembers().add(this);
+//    }
 }
