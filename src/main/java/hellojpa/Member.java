@@ -3,25 +3,45 @@ package hellojpa;
 import jakarta.persistence.*;
 
 @Entity
-//@SequenceGenerator(
-//        name = "MEMBER_SEQ_GENERATOR",
-//        sequenceName = "MEMBER_SEQ",
-//        initialValue = 1, allocationSize = 50
-//)
-@TableGenerator(
-        name = "MEMBER_SEQ_GENERATOR",
-        table = "MY_SEQUENCES",
-        pkColumnName = "MEMBER_SEQ",
-        initialValue = 0, allocationSize = 50
-)
 public class Member {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "MEMBER_SEQ_GENERATOR")
+    @GeneratedValue
     private Long id;
     private String username;
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
 
     protected Member() {
+    }
+
+    public Member(Long id, String username, Team team) {
+        this.id = id;
+        this.username = username;
+        this.team = team;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
