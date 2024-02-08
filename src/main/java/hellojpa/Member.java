@@ -8,17 +8,13 @@ public class Member {
     @GeneratedValue
     private Long id;
     private String username;
-    @ManyToOne
-    @JoinColumn(name = "team_id")
-    private Team team;
 
     protected Member() {
     }
 
-    public Member(Long id, String username, Team team) {
+    public Member(Long id, String username) {
         this.id = id;
         this.username = username;
-        this.team = team;
     }
 
     public Long getId() {
@@ -36,17 +32,4 @@ public class Member {
     public void setUsername(String username) {
         this.username = username;
     }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-//    public void join(Team team) {
-//        this.setTeam(team);
-//        team.getMembers().add(this);
-//    }
 }
