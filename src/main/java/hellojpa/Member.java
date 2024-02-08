@@ -8,6 +8,10 @@ public class Member {
     @GeneratedValue
     private Long id;
     private String username;
+    @OneToOne
+    @JoinColumn(name = "locker_id")
+//    @OneToOne(mappedBy = "member")
+    private Locker locker;
 
     protected Member() {
     }
