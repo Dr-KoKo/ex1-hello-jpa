@@ -2,16 +2,20 @@ package hellojpa;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Member {
     @Id
     @GeneratedValue
     private Long id;
     private String username;
-    @OneToOne
-    @JoinColumn(name = "locker_id")
-//    @OneToOne(mappedBy = "member")
-    private Locker locker;
+//    @ManyToMany
+//    @JoinTable(name = "MEMBER_PRODUCT")
+//    private List<Product> products = new ArrayList<>();
+    @OneToMany(mappedBy = "member")
+    private List<MemberProduct> memberProducts = new ArrayList<>();
 
     protected Member() {
     }
