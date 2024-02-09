@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity{
     @Id
     @GeneratedValue
     private Long id;
@@ -23,8 +23,7 @@ public class Member {
     protected Member() {
     }
 
-    public Member(Long id, String username) {
-        this.id = id;
+    public Member(String username) {
         this.username = username;
     }
 
