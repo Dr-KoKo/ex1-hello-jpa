@@ -14,12 +14,15 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member(null, "member1");
-            em.persist(member);
+            Movie movie = new Movie("name", 1000, "director", "actor");
+            em.persist(movie);
 
-            Team team = new Team(null, "teamA");
-            team.addMember(member);
-            em.persist(team);
+            em.flush();
+            em.clear();
+
+            Item item = em.find(Item.class, movie.getId());
+            System.out.println("item = " + item);
+//            System.out.println("findMovie = " + findMovie);
 
             tx.commit();
         } catch (RuntimeException e) {
