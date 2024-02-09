@@ -14,6 +14,9 @@ public class Member {
 //    @ManyToMany
 //    @JoinTable(name = "MEMBER_PRODUCT")
 //    private List<Product> products = new ArrayList<>();
+//    @ManyToOne
+//    @JoinColumn(name = "team_id")
+//    private Team team;
     @OneToMany(mappedBy = "member")
     private List<MemberProduct> memberProducts = new ArrayList<>();
 
@@ -40,4 +43,17 @@ public class Member {
     public void setUsername(String username) {
         this.username = username;
     }
+
+//    public Team getTeam() {
+//        return team;
+//    }
+
+//    public void setTeam(Team team) {
+//        this.team = team;
+//    }
+
+//    public void join(Team team) {
+//        this.setTeam(team);
+//        team.getMembers().add(this);
+//    }
 }
