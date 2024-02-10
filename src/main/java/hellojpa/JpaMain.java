@@ -14,18 +14,19 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member("member");
-            em.persist(member);
+            Member member1 = new Member("member1");
+            Member member2 = new Member("member2");
 
             Team team = new Team("teamA");
-            team.addMember(member);
+            team.addMember(member1);
+            team.addMember(member2);
             em.persist(team);
 
             em.flush();
             em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-            System.out.println("findMember.getTeam() = " + findMember.getTeam().getClass());
+            Team findTeam = em.find(Team.class, team.getId());
+            findTeam.getMembers().remove(0);
 
             tx.commit();
         } catch (RuntimeException e) {

@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Team extends BaseEntity{
+public class Team extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Member> members = new ArrayList<>();
 
     protected Team() {
@@ -19,6 +19,10 @@ public class Team extends BaseEntity{
 
     public Team(String name) {
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public List<Member> getMembers() {
