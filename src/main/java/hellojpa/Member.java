@@ -23,6 +23,10 @@ public class Member extends BaseEntity {
         return id;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void setTeam(Team team) {
         this.team = team;
     }
