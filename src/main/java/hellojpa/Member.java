@@ -48,6 +48,14 @@ public class Member extends BaseEntity {
         return team;
     }
 
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
     public void setTeam(Team team) {
         this.team = team;
     }

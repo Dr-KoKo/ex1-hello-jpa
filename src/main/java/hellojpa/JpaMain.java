@@ -18,8 +18,13 @@ public class JpaMain {
         try {
             Address homeAddress = new Address("city", "street", "zipcode");
             Period workPeriod = new Period(LocalDate.now(), LocalDate.now().plusDays(2L));
-            Member member = new Member("member", workPeriod, homeAddress);
-            em.persist(member);
+
+            Member member1 = new Member("member", workPeriod, homeAddress);
+            em.persist(member1);
+            Member member2 = new Member("member", workPeriod, homeAddress);
+            em.persist(member2);
+
+            member1.setHomeAddress(new Address("newCity", "newStreet", "newZipcode"));
 
             tx.commit();
         } catch (RuntimeException e) {
