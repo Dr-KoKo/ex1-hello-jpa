@@ -11,12 +11,29 @@ public class Member extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
+    @Embedded
+    private Period workPeriod;
+    @Embedded
+    private Address homeAddress;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "city", column = @Column(name = "work_city")),
+            @AttributeOverride(name = "street", column = @Column(name = "work_street")),
+            @AttributeOverride(name = "zipcode", column = @Column(name = "work_zipcode"))
+    })
+    private Address workAddress;
 
     protected Member() {
     }
 
     public Member(String username) {
         this.username = username;
+    }
+
+    public Member(String username, Period workPeriod, Address homeAddress) {
+        this.username = username;
+        this.workPeriod = workPeriod;
+        this.homeAddress = homeAddress;
     }
 
     public Long getId() {
