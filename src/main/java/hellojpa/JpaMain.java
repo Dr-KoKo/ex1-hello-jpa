@@ -5,7 +5,8 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
-import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -16,15 +17,53 @@ public class JpaMain {
         tx.begin();
 
         try {
+            // when
             Address homeAddress = new Address("city", "street", "zipcode");
-            Period workPeriod = new Period(LocalDate.now(), LocalDate.now().plusDays(2L));
+            Member member = new Member("member", homeAddress);
 
-            Member member1 = new Member("member", workPeriod, homeAddress);
-            em.persist(member1);
-            Member member2 = new Member("member", workPeriod, homeAddress);
-            em.persist(member2);
+            member.addFavoriteFood("치킨");
+            member.addFavoriteFood("족발");
+            member.addFavoriteFood("피자");
 
-            member1.setHomeAddress(new Address("newCity", "newStreet", "newZipcode"));
+            member.addAddressHistory(new Address("oldCity1", "oldStreet1", "oldZipcode1"));
+            member.addAddressHistory(new Address("oldCity2", "oldStreet2", "oldZipcode2"));
+
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            // given
+            System.out.println("========== READ ==========");
+            Member findMember = em.find(Member.class, member.getId());
+
+            System.out.println("========== address ==========");
+            List<Address> addressHistories = findMember.getAddressHistories();
+            for (Address addressHistory : addressHistories) {
+                System.out.println(addressHistory);
+            }
+
+            System.out.println("========== favorite food ==========");
+            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+            for (String favoriteFood : favoriteFoods) {
+                System.out.println(favoriteFood);
+            }
+
+            System.out.println("========== UPDATE ==========");
+            System.out.println("========== home address ==========");
+            System.out.println("homeAddress = " + findMember.getHomeAddress().getCity());
+            System.out.println("homeAddress = " + findMember.getHomeAddress().getStreet());
+            System.out.println("homeAddress = " + findMember.getHomeAddress().getZipcode());
+            findMember.changeHomeAddress(new Address("newCity", "newStreet", "newZipcode"));
+
+            System.out.println("========== favorite food ==========");
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("한식");
+
+            System.out.println("========== address ==========");
+            findMember.getAddressHistories().remove(new Address("oldCity1", "oldStreet1", "oldZipcode1"));
+            findMember.getAddressHistories().add(new Address("oldCity3", "oldStreet3", "oldZipcode3"));
+
 
             tx.commit();
         } catch (RuntimeException e) {
