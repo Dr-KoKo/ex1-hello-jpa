@@ -4,9 +4,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 import java.util.List;
-import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -17,52 +19,26 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // when
-            Address homeAddress = new Address("city", "street", "zipcode");
-            Member member = new Member("member", homeAddress);
+            // JPQL
+            List<Member> resultJPQL = em.createQuery(
+                            "select m from Member m where m.username like '%kim%'",
+                            Member.class)
+                    .getResultList();
 
-            member.addFavoriteFood("치킨");
-            member.addFavoriteFood("족발");
-            member.addFavoriteFood("피자");
+            // Criteria
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Member> query = cb.createQuery(Member.class);
+            Root<Member> m = query.from(Member.class);
+            CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
+            List<Member> resultCriteria = em.createQuery(cq).getResultList();
 
-            member.addAddressHistory(new Address("oldCity1", "oldStreet1", "oldZipcode1"));
-            member.addAddressHistory(new Address("oldCity2", "oldStreet2", "oldZipcode2"));
+            // Querydsl
 
-            em.persist(member);
+            // NativeQuery
+            List<Member> result = em.createNativeQuery("select member_id, city, street, zipcode, username from member", Member.class)
+                    .getResultList();
 
-            em.flush();
-            em.clear();
-
-            // given
-            System.out.println("========== READ ==========");
-            Member findMember = em.find(Member.class, member.getId());
-
-            System.out.println("========== address ==========");
-            List<Address> addressHistories = findMember.getAddressHistories();
-            for (Address addressHistory : addressHistories) {
-                System.out.println(addressHistory);
-            }
-
-            System.out.println("========== favorite food ==========");
-            Set<String> favoriteFoods = findMember.getFavoriteFoods();
-            for (String favoriteFood : favoriteFoods) {
-                System.out.println(favoriteFood);
-            }
-
-            System.out.println("========== UPDATE ==========");
-            System.out.println("========== home address ==========");
-            System.out.println("homeAddress = " + findMember.getHomeAddress().getCity());
-            System.out.println("homeAddress = " + findMember.getHomeAddress().getStreet());
-            System.out.println("homeAddress = " + findMember.getHomeAddress().getZipcode());
-            findMember.changeHomeAddress(new Address("newCity", "newStreet", "newZipcode"));
-
-            System.out.println("========== favorite food ==========");
-            findMember.getFavoriteFoods().remove("치킨");
-            findMember.getFavoriteFoods().add("한식");
-
-            System.out.println("========== address ==========");
-            findMember.getAddressHistories().remove(new Address("oldCity1", "oldStreet1", "oldZipcode1"));
-            findMember.getAddressHistories().add(new Address("oldCity3", "oldStreet3", "oldZipcode3"));
+            // JDBC or JDBCTemplate - JPA와 혼용시 JDBC로 쿼리하기 전에 flush 필수
 
 
             tx.commit();
